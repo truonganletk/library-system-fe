@@ -1,9 +1,9 @@
 "use client";
 import { useAuth } from "@/contexts/auth/AuthContext";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 import type { FormProps } from "antd";
-import { Button, Checkbox, Flex, Form, Input, Typography } from "antd";
+import { Button, Checkbox, Flex, Form, Input, Spin, Typography } from "antd";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 type FieldType = {
   username: string;
@@ -16,17 +16,30 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
 };
 
 const LoginForm: React.FC = () => {
-  const { login, user } = useAuth();
+  const { login, user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (user) {
-      router.push("/");
+      router.push("/app");
     }
   }, [router, user]);
 
+  if (loading) {
+    return (
+      <Flex
+        className="h-screen w-screen"
+        justify="center"
+        align="center"
+        gap="middle"
+      >
+        <Spin size="large" />
+      </Flex>
+    );
+  }
+
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    login(values.username, values.password, () => {});
+    login(values.username, values.password);
   };
 
   return (

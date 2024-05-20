@@ -18,49 +18,67 @@ import {
   theme,
   Typography,
 } from "antd";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  href?: string,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    href,
-  } as MenuItem;
-}
-
-const items: MenuItem[] = [
-  getItem("Option 1", "1", <PieChartOutlined />),
-  getItem("Option 2", "2", <DesktopOutlined />),
-  getItem("User", "3", <UserOutlined />, "/user"),
-  getItem("Files", "9", <FileOutlined />),
-];
-
-export default function Home() {
-  const route = useRouter();
+export default function AppLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const router = useRouter();
   const { user, logout, loading } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  const pathname = usePathname();
 
-  useEffect(() => {
-    if (!user && !loading) {
-      route.push("/login");
+  React.useEffect(() => {
+    if (user) {
+      router.push("/app/user");
+    } else {
+      router.push("/login");
     }
-  }, [user, route, loading]);
+  }, [user, router]);
+
+  const items = React.useMemo<MenuItem[]>(() => {
+    function getItem(
+      label: React.ReactNode,
+      key: React.Key,
+      icon?: React.ReactNode,
+      children?: MenuItem[]
+    ): MenuItem {
+      return {
+        key,
+        icon,
+        children,
+        label,
+        onClick: () => {
+          router.push(`${key}`);
+        },
+      } as MenuItem;
+    }
+    return [
+      getItem("User", "user", <UserOutlined />),
+      getItem("Book", "book", <PieChartOutlined />),
+    ];
+  }, [router]);
+
+  const selectedKey: string[] = React.useMemo(() => {
+    if (pathname) {
+      return [
+        items
+          .find((item) => item?.key === pathname.split("/")[2])
+          ?.key?.toString() || "user",
+      ];
+    }
+    return ["user"];
+  }, [items, pathname]);
 
   if (!user && loading) {
     return (
@@ -88,7 +106,7 @@ export default function Home() {
 
         <Menu
           theme="dark"
-          defaultSelectedKeys={["1"]}
+          selectedKeys={selectedKey}
           mode="inline"
           items={items}
         />
@@ -104,7 +122,9 @@ export default function Home() {
               padding: "0 15px",
             }}
           >
-            <Typography.Text>{user?.username}</Typography.Text>
+            <Typography.Text>
+              {user?.username} ({user?.role})
+            </Typography.Text>
             <Button
               type="primary"
               size="small"
@@ -117,8 +137,15 @@ export default function Home() {
         </Header>
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            {pathname &&
+              pathname
+                .replace("/", "")
+                .split("/")
+                .map((item) => (
+                  <Breadcrumb.Item key={item}>
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                  </Breadcrumb.Item>
+                ))}
           </Breadcrumb>
           <div
             style={{
@@ -128,7 +155,7 @@ export default function Home() {
               borderRadius: borderRadiusLG,
             }}
           >
-            Bill is a cat.
+            {children}
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>

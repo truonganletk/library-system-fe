@@ -1,55 +1,47 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import * as api from "@/libs/axios";
+import { notification } from "antd";
 
-// Define types for your authentication context
 interface AuthContextProps {
   user: any;
-  login: (
-    username: string,
-    password: string,
-    callback: () => void
-  ) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
-  loading: boolean;
+  loading: boolean | null;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean | null>(null);
 
   useEffect(() => {
+    if (loading !== null) return;
+
     const token = Cookies.get("access_token");
     if (token) {
       getUser();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getUser = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:8000/auth/profile", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("access_token")}`,
-        },
-      });
-      const data = await response.json();
-      setUser(data);
-      setLoading(false);
+      const response = await api.get("/auth/profile");
+      if (response.status !== 200) {
+        throw new Error(response.message);
+      }
+      setUser(response.data);
     } catch (error) {
-      setLoading(false);
+      setUser(null);
       console.error("Error fetching user:", error);
+      setLoading(false);
     }
   };
 
-  const login = async (
-    username: string,
-    password: string,
-    callback: () => void
-  ) => {
+  const login = async (username: string, password: string) => {
     try {
       const response = await fetch("http://localhost:8000/auth/login", {
         method: "POST",
@@ -60,7 +52,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
 
       if (!response.ok) {
-        throw new Error("Login failed");
+        notification.error({
+          message: "Login failed",
+          description: "Invalid username or password",
+          duration: 2,
+        })
       }
 
       const { access_token } = await response.json();
@@ -68,12 +64,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       getUser();
     } catch (error) {
       console.error("Login failed", error);
-      callback();
     }
   };
 
   const logout = () => {
     setUser(null);
+    setLoading(false);
     Cookies.remove("access_token"); // Remove token from cookie
   };
 
