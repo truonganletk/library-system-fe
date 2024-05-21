@@ -59,13 +59,21 @@ export default function AppLayout({
         children,
         label,
         onClick: () => {
-          router.push(`${key}`);
+          if (children) return;
+          router.push(`/app/${key}`);
         },
       } as MenuItem;
     }
     return [
       getItem("User", "user", <UserOutlined />),
       getItem("Book", "book", <PieChartOutlined />),
+      getItem("Loan History", "loan-history", <DesktopOutlined />),
+      getItem("Loan Management", "loan-management", <FileOutlined />, [
+        getItem("All Loans", "loan-management/all"),
+        getItem("Pending Loans", "loan-management/pending"),
+        getItem("Returning Loans", "loan-management/returning"),
+        getItem("Overdue Loans", "loan-management/overdue"),
+      ]),
     ];
   }, [router]);
 
