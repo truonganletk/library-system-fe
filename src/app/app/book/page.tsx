@@ -1,25 +1,31 @@
 "use client";
+import BorrowBookModal from "@/components/book/borrow-book-modal";
 import CreateBookModal from "@/components/book/create-book-modal";
 import { useAuth } from "@/contexts/auth/AuthContext";
-import { Book } from "@/models/book.model";
+import { Book, BookStatus } from "@/models/book.model";
 import { UserRole } from "@/models/user.model";
 import { getBooks } from "@/utils/apis/book.api";
-import { Button, Flex, Table } from "antd";
+import { capitalizeFirstLetter } from "@/utils/string";
+import { Button, Flex, Table, TableColumnType } from "antd";
 import * as React from "react";
 
 export default function BookPage() {
   const [books, setBooks] = React.useState<Book[]>([]);
   const [open, setOpen] = React.useState(false);
+  const [openBorrow, setOpenBorrow] = React.useState(false);
+  const [selectedBook, setSelectedBook] = React.useState<Book | null>(null);
   const { user } = useAuth();
+
+  const fetchBooks = async () => {
+    const response = await getBooks();
+    setBooks(response);
+  };
+
   React.useEffect(() => {
-    const fetchBooks = async () => {
-      const response = await getBooks();
-      setBooks(response);
-    };
     fetchBooks();
   }, []);
 
-  const columns = [
+  const columns: TableColumnType<Book>[] = [
     {
       title: "Title",
       dataIndex: "title",
@@ -49,6 +55,35 @@ export default function BookPage() {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      render(value) {
+        return (
+          <div>
+            <p>{capitalizeFirstLetter(value)}</p>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      render(value, record, index) {
+        return (
+          <div>
+            {record.status === BookStatus.Available && (
+              <Button
+                type="primary"
+                onClick={() => {
+                  setSelectedBook(record);
+                  setOpenBorrow(true);
+                }}
+              >
+                Borrow
+              </Button>
+            )}
+          </div>
+        );
+      },
     },
   ];
 
@@ -61,6 +96,16 @@ export default function BookPage() {
       )}
       <Table dataSource={books} columns={columns} />
       <CreateBookModal isModalOpen={open} onClose={() => setOpen(false)} />
+      <BorrowBookModal
+        isModalOpen={openBorrow}
+        onClose={() => {
+          setOpenBorrow(false);
+          setSelectedBook(null);
+          fetchBooks();
+        }}
+        book_id={selectedBook?.id}
+        book_title={selectedBook?.title}
+      />
     </div>
   );
 }

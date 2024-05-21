@@ -1,20 +1,26 @@
 "use client";
 import { Loan } from "@/models/loan.model";
-import { getLoansByUser } from "@/utils/apis/loan.api";
-import { Table, TableColumnType } from "antd";
+import { acceptLoan, getLoansByStatus } from "@/utils/apis/loan.api";
+import { Button, Table, TableColumnType } from "antd";
 import dayjs from "dayjs";
 import * as React from "react";
 
 export default function LoanPage() {
   const [loans, setLoans] = React.useState<Loan[]>([]);
 
-  React.useEffect(() => {
-    const fetchLoans = async () => {
-      const response = await getLoansByUser();
-      setLoans(response);
-    };
-    fetchLoans();
-  }, []);
+  const fetchLoans = async () => {
+    const response = await getLoansByStatus("returning");
+    setLoans(response);
+  };
+
+  const handleAcceptLoan = async (id: number) => {
+    try {
+      await acceptLoan(id);
+      fetchLoans();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const columns: TableColumnType<Loan>[] = [
     {
@@ -54,11 +60,20 @@ export default function LoanPage() {
       },
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: "Action",
+      dataIndex: "id",
+      key: "id",
+      render: (value, record) => (
+        <Button type="primary" onClick={() => handleAcceptLoan(record.id)}>
+          Accept
+        </Button>
+      ),
     },
   ];
+
+  React.useEffect(() => {
+    fetchLoans();
+  }, []);
 
   return (
     <div>

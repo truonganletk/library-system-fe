@@ -7,7 +7,7 @@ export default function AppPage() {
   const router = useRouter();
   React.useEffect(() => {
     if (user) {
-      router.push("/app/user");
+      router.push("/app/book");
     } else {
       router.push("/login");
     }

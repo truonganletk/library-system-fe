@@ -1,10 +1,10 @@
 "use client";
 import { useAuth } from "@/contexts/auth/AuthContext";
+import { UserRole } from "@/models/user.model";
 import {
   DesktopOutlined,
   FileOutlined,
   PieChartOutlined,
-  TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
@@ -19,7 +19,7 @@ import {
   Typography,
 } from "antd";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -40,7 +40,7 @@ export default function AppLayout({
 
   React.useEffect(() => {
     if (user) {
-      router.push("/app/user");
+      router.push("/app/book");
     } else {
       router.push("/login");
     }
@@ -64,18 +64,25 @@ export default function AppLayout({
         },
       } as MenuItem;
     }
-    return [
-      getItem("User", "user", <UserOutlined />),
+    const items: MenuItem[] = [
       getItem("Book", "book", <PieChartOutlined />),
       getItem("Loan History", "loan-history", <DesktopOutlined />),
-      getItem("Loan Management", "loan-management", <FileOutlined />, [
-        getItem("All Loans", "loan-management/all"),
-        getItem("Pending Loans", "loan-management/pending"),
-        getItem("Returning Loans", "loan-management/returning"),
-        getItem("Overdue Loans", "loan-management/overdue"),
-      ]),
     ];
-  }, [router]);
+
+    if (user && user?.role !== UserRole.USER) {
+      items.push(getItem("User Management", "user", <UserOutlined />));
+      items.push(
+        getItem("Loan Management", "loan-management", <FileOutlined />, [
+          getItem("All Loans", "loan-management/all"),
+          getItem("Pending Loans", "loan-management/pending"),
+          getItem("Returning Loans", "loan-management/returning"),
+          getItem("Overdue Loans", "loan-management/overdue"),
+        ])
+      );
+    }
+
+    return items;
+  }, [router, user]);
 
   const selectedKey: string[] = React.useMemo(() => {
     if (pathname) {

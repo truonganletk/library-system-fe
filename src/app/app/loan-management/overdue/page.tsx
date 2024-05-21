@@ -1,6 +1,6 @@
 "use client";
 import { Loan } from "@/models/loan.model";
-import { getLoansByUser } from "@/utils/apis/loan.api";
+import { getOverdueLoans } from "@/utils/apis/loan.api";
 import { Table, TableColumnType } from "antd";
 import dayjs from "dayjs";
 import * as React from "react";
@@ -10,7 +10,7 @@ export default function LoanPage() {
 
   React.useEffect(() => {
     const fetchLoans = async () => {
-      const response = await getLoansByUser();
+      const response = await getOverdueLoans();
       setLoans(response);
     };
     fetchLoans();
@@ -52,11 +52,6 @@ export default function LoanPage() {
           </div>
         );
       },
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
     },
   ];
 
