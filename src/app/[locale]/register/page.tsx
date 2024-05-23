@@ -5,6 +5,7 @@ import { Button, Flex, Form, Input, Spin, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 type FieldType = {
   username: string;
@@ -18,6 +19,7 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
 const RegisterForm: React.FC = () => {
   const { register, user, loading } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (user) {
@@ -44,10 +46,9 @@ const RegisterForm: React.FC = () => {
 
   return (
     <Flex className="h-screen flex flex-col items-center justify-center">
-      <Typography.Title level={2}>Register</Typography.Title>
+      <Typography.Title level={2}>{t("register")}</Typography.Title>
       <Form
         name="basic"
-        labelCol={{ span: 5 }}
         style={{ maxWidth: 600, width: "100%" }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
@@ -55,7 +56,6 @@ const RegisterForm: React.FC = () => {
         autoComplete="off"
       >
         <Form.Item<FieldType>
-          label="Username"
           name="username"
           rules={[{ required: true, message: "Please input your username!" }]}
         >
@@ -63,7 +63,6 @@ const RegisterForm: React.FC = () => {
         </Form.Item>
 
         <Form.Item<FieldType>
-          label="Password"
           name="password"
           rules={[{ required: true, message: "Please input your password!" }]}
         >
@@ -72,15 +71,15 @@ const RegisterForm: React.FC = () => {
 
         <Form.Item className="flex justify-center">
           <Button type="primary" htmlType="submit">
-            Submit
+            {t("register")}
           </Button>
         </Form.Item>
       </Form>
 
       <Typography.Text>
-        Already have an account?{" "}
+        {t("already_have_account")}
         <Link href="/login" passHref>
-          <Typography.Link>Login</Typography.Link>
+          <Typography.Link>{t("login")}</Typography.Link>
         </Link>
       </Typography.Text>
     </Flex>

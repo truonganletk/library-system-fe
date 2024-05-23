@@ -4,6 +4,7 @@ import "./globals.css";
 import Provider from "@/components/provider/provider";
 import { dir } from "i18next";
 import i18nConfig from "@/libs/i18n/i18nConfig";
+import LanguageChanger from "@/components/LanguageChanger";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html
-      lang={i18nConfig.locales.includes(locale) ? locale : i18nConfig.defaultLocale}
+      lang={
+        i18nConfig.locales.includes(locale) ? locale : i18nConfig.defaultLocale
+      }
       dir={dir(
         i18nConfig.locales.includes(locale) ? locale : i18nConfig.defaultLocale
       )}

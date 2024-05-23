@@ -1,0 +1,64 @@
+{
+  "logout": "Logout",
+  "footer": "Library System",
+  "accept": "Accept",
+  "return": "Return",
+  "borrow": "Borrow",
+  "add_book": "Add New Book",
+  "modal": {
+    "borrow_book": "Borrow Book",
+    "book_title": "Book Title",
+    "date": "Date",
+    "submit": "Submit",
+    "create_book": "Create New Book",
+    "title": "Title",
+    "author": "Author",
+    "publisher": "Publisher",
+    "year": "Year",
+    "genre": "Genre",
+    "status": "Status",
+    "description": "Description"
+  },
+  "menu": {
+    "book": "Book",
+    "loan_history": "Loan History",
+    "user_management": "User Management",
+    "loan_management": "Loan Management",
+    "all_loans": "All Loans",
+    "pending_loans": "Pending Loans",
+    "returning_loans": "Returning Loans",
+    "overdue_loans": "Overdue Loans"
+  },
+  "table": {
+    "title": "Title",
+    "author": "Author",
+    "publisher": "Publisher",
+    "year": "Year",
+    "genre": "Genre",
+    "status": "Status",
+    "actions": "Actions",
+    "book_title": "Book Title",
+    "start_date": "Start Date",
+    "due_date": "Due Date",
+    "name": "Name",
+    "role": "Role"
+  },
+  "role": {
+    "user": "User",
+    "super": "Librarian",
+    "admin": "Admin"
+  },
+  "book_status": {
+    "available": "Available",
+    "checked_out": "Checked Out",
+    "maintenance": "Maintenance",
+    "lost": "Lost"
+  },
+  "loan_status": {
+    "all": "All",
+    "pending": "Pending",
+    "borrowing": "Borrowing",
+    "returning": "Returning",
+    "returned": "Returned"
+  }
+}

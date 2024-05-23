@@ -1,15 +1,15 @@
 "use client";
-import { Book } from "@/models/book.model";
 import { Loan, LoanStatus } from "@/models/loan.model";
 import { getLoansByUser, returnLoan } from "@/utils/apis/loan.api";
-import { Button, Table, TableColumnType } from "antd";
-import * as React from "react";
-import dayjs from "dayjs";
 import { capitalizeFirstLetter } from "@/utils/string";
+import { Button, Table, TableColumnType } from "antd";
+import dayjs from "dayjs";
+import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function LoanPage() {
   const [loans, setLoans] = React.useState<Loan[]>([]);
-
+  const { t } = useTranslation();
   const fetchLoans = async () => {
     const response = await getLoansByUser();
     setLoans(
@@ -35,7 +35,7 @@ export default function LoanPage() {
 
   const columns: TableColumnType<Loan>[] = [
     {
-      title: "Book Title",
+      title: t("table.book_title"),
       dataIndex: "book.title",
       key: "book.title",
       render(value, record, index) {
@@ -47,7 +47,7 @@ export default function LoanPage() {
       },
     },
     {
-      title: "Start Date",
+      title: t("table.start_date"),
       dataIndex: "start_date",
       key: "start_date",
       render(value) {
@@ -59,7 +59,7 @@ export default function LoanPage() {
       },
     },
     {
-      title: "Due Date",
+      title: t("table.due_date"),
       dataIndex: "due_date",
       key: "due_date",
       render(value) {
@@ -71,26 +71,26 @@ export default function LoanPage() {
       },
     },
     {
-      title: "Status",
+      title: t("table.status"),
       dataIndex: "status",
       key: "status",
       render(value) {
         return (
           <div>
-            <p>{capitalizeFirstLetter(value)}</p>
+            <p>{t(`loan_status.${value}`)}</p>
           </div>
         );
       },
     },
     {
-      title: "Action",
+      title: t("table.actions"),
       dataIndex: "id",
       key: "id",
       render: (value, record) => (
         <div>
           {record.status === LoanStatus.Borrowing && (
             <Button type="primary" onClick={() => handleReturnLoan(record.id)}>
-              Return
+              {t("return")}
             </Button>
           )}
         </div>

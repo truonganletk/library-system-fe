@@ -51,7 +51,7 @@ const LoginForm: React.FC = () => {
       <Typography.Title level={2}>{t("title")}</Typography.Title>
       <Form
         name="basic"
-        labelCol={{ span: 5 }}
+        labelCol={{ span: 7 }}
         style={{ maxWidth: 600, width: "100%" }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
@@ -59,7 +59,6 @@ const LoginForm: React.FC = () => {
         autoComplete="off"
       >
         <Form.Item<FieldType>
-          label="Username"
           name="username"
           rules={[{ required: true, message: "Please input your username!" }]}
         >
@@ -67,7 +66,6 @@ const LoginForm: React.FC = () => {
         </Form.Item>
 
         <Form.Item<FieldType>
-          label="Password"
           name="password"
           rules={[{ required: true, message: "Please input your password!" }]}
         >
@@ -77,21 +75,21 @@ const LoginForm: React.FC = () => {
         <Form.Item<FieldType>
           name="remember"
           valuePropName="checked"
-          wrapperCol={{ offset: 5, span: 16 }}
+          wrapperCol={{ span: 16 }}
         >
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
         <Form.Item className="flex justify-center">
           <Button type="primary" htmlType="submit">
-            Submit
+            {t("login")}
           </Button>
         </Form.Item>
       </Form>
       <Typography.Text>
-        Don&apos;t have an account?{" "}
+        {t("dont_have_account")}
         <Link href="/register" passHref>
-          <Typography.Link>Register</Typography.Link>
+          <Typography.Link>{t("register")}.</Typography.Link>
         </Link>
       </Typography.Text>
     </Flex>

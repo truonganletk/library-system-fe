@@ -10,7 +10,7 @@ export interface ILoginLayoutProps {
 
 const i18nNamespaces = ["login"];
 
-export default async function LoginLayout({
+export default async function RegisterLayout({
   params: { locale },
   children,
 }: ILoginLayoutProps) {

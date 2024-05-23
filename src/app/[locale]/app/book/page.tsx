@@ -5,9 +5,9 @@ import { useAuth } from "@/contexts/auth/AuthContext";
 import { Book, BookStatus } from "@/models/book.model";
 import { UserRole } from "@/models/user.model";
 import { getBooks } from "@/utils/apis/book.api";
-import { capitalizeFirstLetter } from "@/utils/string";
 import { Button, Flex, Table, TableColumnType } from "antd";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function BookPage() {
   const [books, setBooks] = React.useState<Book[]>([]);
@@ -15,6 +15,7 @@ export default function BookPage() {
   const [openBorrow, setOpenBorrow] = React.useState(false);
   const [selectedBook, setSelectedBook] = React.useState<Book | null>(null);
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const fetchBooks = async () => {
     const response = await getBooks();
@@ -27,44 +28,44 @@ export default function BookPage() {
 
   const columns: TableColumnType<Book>[] = [
     {
-      title: "Title",
+      title: t("table.title"),
       dataIndex: "title",
       key: "title",
     },
     {
-      title: "Author",
+      title: t("table.author"),
       dataIndex: "author",
       key: "author",
     },
     {
-      title: "Publisher",
+      title: t("table.publisher"),
       dataIndex: "publisher",
       key: "publisher",
     },
     {
-      title: "Year",
+      title: t("table.year"),
       dataIndex: "year",
       key: "year",
     },
     {
-      title: "Genre",
+      title: t("table.genre"),
       dataIndex: "genre",
       key: "genre",
     },
     {
-      title: "Status",
+      title: t("table.status"),
       dataIndex: "status",
       key: "status",
       render(value) {
         return (
           <div>
-            <p>{capitalizeFirstLetter(value)}</p>
+            <p>{t(`book_status.${value}`)}</p>
           </div>
         );
       },
     },
     {
-      title: "Action",
+      title: t("table.actions"),
       dataIndex: "action",
       key: "action",
       render(value, record, index) {
@@ -78,7 +79,7 @@ export default function BookPage() {
                   setOpenBorrow(true);
                 }}
               >
-                Borrow
+                {t("borrow")}
               </Button>
             )}
           </div>
@@ -91,7 +92,7 @@ export default function BookPage() {
     <div>
       {user?.role !== UserRole.USER && (
         <Flex className="justify-end mb-4">
-          <Button onClick={() => setOpen(true)}>Add New Book</Button>
+          <Button onClick={() => setOpen(true)}>{t("add_book")}</Button>
         </Flex>
       )}
       <Table dataSource={books} columns={columns} />

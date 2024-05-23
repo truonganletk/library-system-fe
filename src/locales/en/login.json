@@ -1,3 +1,29 @@
 {
-  "title": "Login"
+  "title": "Login",
+  "username": "Username",
+  "password": "Password",
+  "login": "Login",
+  "dont_have_account": "Don't have an account?",
+  "already_have_account": "Already have an account?",
+  "register": "Register",
+  "logout": "Logout",
+  "menu": {
+    "book": "Book",
+    "loan_history": "Loan History",
+    "user_management": "User Management",
+    "loan_management": "Loan Management",
+    "all_loans": "All Loans",
+    "pending_loans": "Pending Loans",
+    "returning_loans": "Returning Loans",
+    "overdue_loans": "Overdue Loans"
+  },
+  "table": {
+    "title": "Title",
+    "author": "Author",
+    "publisher": "Publisher",
+    "year": "Year",
+    "genre": "Genre",
+    "status": "Status",
+    "actions": "Actions"
+  }
 }

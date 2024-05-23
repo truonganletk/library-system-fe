@@ -11,6 +11,7 @@ import {
   notification,
   Select,
 } from "antd";
+import { useTranslation } from "react-i18next";
 export interface ICreateBookModalProps {
   isModalOpen: boolean;
   onClose: () => void;
@@ -30,6 +31,7 @@ export default function CreateBookModal({
   isModalOpen,
   onClose,
 }: ICreateBookModalProps) {
+  const { t } = useTranslation();
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
       await createBook(values);
@@ -55,7 +57,7 @@ export default function CreateBookModal({
 
   return (
     <Modal
-      title="Create New Book"
+      title={t("modal.create_book")}
       open={isModalOpen}
       onCancel={onClose}
       footer={[]}
@@ -70,7 +72,7 @@ export default function CreateBookModal({
         autoComplete="off"
       >
         <Form.Item
-          label="Title"
+          label={t("modal.title")}
           name="title"
           rules={[{ required: true, message: "Please input your title!" }]}
         >
@@ -78,7 +80,7 @@ export default function CreateBookModal({
         </Form.Item>
 
         <Form.Item
-          label="Author"
+          label={t("modal.author")}
           name="author"
           rules={[{ required: true, message: "Please input your author!" }]}
         >
@@ -86,7 +88,7 @@ export default function CreateBookModal({
         </Form.Item>
 
         <Form.Item
-          label="Publisher"
+          label={t("modal.publisher")}
           name="publisher"
           rules={[{ required: true, message: "Please input your publisher!" }]}
         >
@@ -94,7 +96,7 @@ export default function CreateBookModal({
         </Form.Item>
 
         <Form.Item
-          label="Year"
+          label={t("modal.year")}
           name="year"
           rules={[
             { required: true, message: "Please input your year!" },
@@ -108,7 +110,7 @@ export default function CreateBookModal({
         </Form.Item>
 
         <Form.Item
-          label="Description"
+          label={t("modal.description")}
           name="description"
           rules={[
             { required: true, message: "Please input your description!" },
@@ -118,7 +120,7 @@ export default function CreateBookModal({
         </Form.Item>
 
         <Form.Item
-          label="Genre"
+          label={t("modal.genre")}
           name="genre"
           rules={[{ required: true, message: "Please input your genre!" }]}
         >
@@ -126,7 +128,7 @@ export default function CreateBookModal({
         </Form.Item>
 
         <Form.Item
-          name="status"
+          name={t("modal.status")}
           label="Status"
           rules={[{ required: true, message: "Please input your status!" }]}
         >
@@ -141,7 +143,7 @@ export default function CreateBookModal({
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            {t("modal.submit")}
           </Button>
         </Form.Item>
       </Form>

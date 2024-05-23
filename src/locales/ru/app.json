@@ -1,0 +1,64 @@
+{
+  "logout": "Выход",
+  "footer": "Система библиотек",
+  "accept": "Принять",
+  "return": "Вернуть",
+  "borrow": "Выдать",
+  "add_book": "Добавить новую книгу",
+  "modal": {
+    "borrow_book": "Выдать книгу",
+    "book_title": "Название книги",
+    "date": "Дата",
+    "submit": "Отправить",
+    "create_book": "Создать новую книгу",
+    "title": "Название",
+    "author": "Автор",
+    "publisher": "Издательство",
+    "year": "Год",
+    "genre": "Жанр",
+    "status": "Статус",
+    "description": "Описание"
+  },
+  "menu": {
+    "book": "Книга",
+    "loan_history": "История выдач",
+    "user_management": "Управление пользователями",
+    "loan_management": "Управление выдачами",
+    "all_loans": "Все выдачи",
+    "pending_loans": "Ожидающие выдачи",
+    "returning_loans": "Возвращаемые выдачи",
+    "overdue_loans": "Просроченные выдачи"
+  },
+  "table": {
+    "title": "Название",
+    "author": "Автор",
+    "publisher": "Издательство",
+    "year": "Год",
+    "genre": "Жанр",
+    "status": "Статус",
+    "actions": "Действия",
+    "book_title": "Название книги",
+    "start_date": "Дата выдачи",
+    "due_date": "Дата возврата",
+    "name": "Имя",
+    "role": "Роль"
+  },
+  "role": {
+    "user": "Пользователь",
+    "super": "Супервизор",
+    "admin": "Администратор"
+  },
+  "book_status": {
+    "available": "Доступно",
+    "checked_out": "Выдано",
+    "maintenance": "На ремонте",
+    "lost": "Потеряно"
+  },
+  "loan_status": {
+    "all": "Все",
+    "pending": "Ожидает",
+    "borrowing": "Выдается",
+    "returning": "Возвращается",
+    "returned": "Возвращено"
+  }
+}

@@ -2,6 +2,7 @@
 import { createLoan } from "@/utils/apis/loan.api";
 import type { FormProps } from "antd";
 import { Button, DatePicker, Form, Input, Modal, notification } from "antd";
+import { useTranslation } from "react-i18next";
 
 const { RangePicker } = DatePicker;
 
@@ -25,6 +26,7 @@ export default function BorrowBookModal({
   book_title,
 }: IBorrowBookModalProps) {
   const [form] = useForm<FieldType>();
+  const { t } = useTranslation();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
@@ -50,7 +52,7 @@ export default function BorrowBookModal({
 
   return (
     <Modal
-      title="Borrow Book"
+      title={t("modal.borrow_book")}
       open={isModalOpen}
       onCancel={onClose}
       footer={[]}
@@ -66,20 +68,20 @@ export default function BorrowBookModal({
         form={form}
       >
         <Form.Item
-          label="Book Title"
+          label={t("modal.book_title")}
           name="book_title"
           initialValue={book_title}
         >
           <Input value={book_title} readOnly />
         </Form.Item>
 
-        <Form.Item label="Date" name="dates">
+        <Form.Item label={t("modal.date")} name="dates">
           <RangePicker />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            {t("modal.submit")}
           </Button>
         </Form.Item>
       </Form>

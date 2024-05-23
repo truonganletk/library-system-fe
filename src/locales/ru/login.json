@@ -1,3 +1,29 @@
 {
-  "title": "Вход"
+  "title": "Вход",
+  "username": "Имя пользователя",
+  "password": "Пароль",
+  "login": "Вход",
+  "dont_have_account": "Нет аккаунта? ",
+  "already_have_account": "Уже есть аккаунт? ",
+  "register": "Регистрация",
+  "logout": "Выход",
+  "menu": {
+    "book": "Книга",
+    "loan_history": "История выдач",
+    "user_management": "Управление пользователями",
+    "loan_management": "Управление выдачами",
+    "all_loans": "Все выдачи",
+    "pending_loans": "Ожидающие выдачи",
+    "returning_loans": "Возвращаемые выдачи",
+    "overdue_loans": "Просроченные выдачи"
+  },
+  "table": {
+    "title": "Название",
+    "author": "Автор",
+    "publisher": "Издательство",
+    "year": "Год",
+    "genre": "Жанр",
+    "status": "Статус",
+    "actions": "Действия"
+  }
 }
