@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@/contexts/auth/AuthContext";
 import type { FormProps } from "antd";
-import { Button, Checkbox, Flex, Form, Input, Spin, Typography } from "antd";
+import { Button, Flex, Form, Input, Spin, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -9,15 +9,14 @@ import React, { useEffect } from "react";
 type FieldType = {
   username: string;
   password: string;
-  remember?: string;
 };
 
 const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 
-const LoginForm: React.FC = () => {
-  const { login, user, loading } = useAuth();
+const RegisterForm: React.FC = () => {
+  const { register, user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -40,12 +39,12 @@ const LoginForm: React.FC = () => {
   }
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    login(values.username, values.password);
+    register(values.username, values.password);
   };
 
   return (
     <Flex className="h-screen flex flex-col items-center justify-center">
-      <Typography.Title level={2}>Login</Typography.Title>
+      <Typography.Title level={2}>Register</Typography.Title>
       <Form
         name="basic"
         labelCol={{ span: 5 }}
@@ -71,28 +70,21 @@ const LoginForm: React.FC = () => {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item<FieldType>
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{ offset: 5, span: 16 }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
         <Form.Item className="flex justify-center">
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
       </Form>
+
       <Typography.Text>
-        Don&apos;t have an account?{" "}
-        <Link href="/register" passHref>
-        <Typography.Link>Register</Typography.Link>
+        Already have an account?{" "}
+        <Link href="/login" passHref>
+          <Typography.Link>Login</Typography.Link>
         </Link>
       </Typography.Text>
     </Flex>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

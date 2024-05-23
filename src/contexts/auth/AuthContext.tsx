@@ -6,6 +6,7 @@ import { notification } from "antd";
 interface AuthContextProps {
   user: any;
   login: (username: string, password: string) => Promise<void>;
+  register: (username: string, password: string) => Promise<void>;
   logout: () => void;
   loading: boolean | null;
 }
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       getUser();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getUser = async () => {
@@ -43,27 +44,45 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await api.post("/auth/login", { username, password });
 
-      if (!response.ok) {
+      if (response.status !== 201) {
         notification.error({
           message: "Login failed",
           description: "Invalid username or password",
           duration: 2,
-        })
+        });
       }
 
-      const { access_token } = await response.json();
+      const { access_token } = response.data;
       Cookies.set("access_token", access_token, { expires: 7 }); // Set token to cookie
       getUser();
     } catch (error) {
       console.error("Login failed", error);
+    }
+  };
+
+  const register = async (username: string, password: string) => {
+    try {
+      const response = await api.post("/auth/register", { username, password });
+
+      if (response.status !== 201) {
+        notification.error({
+          message: "Register failed",
+          description: "Invalid username or password",
+          duration: 2,
+        });
+        return;
+      }
+
+      notification.success({
+        message: "Success",
+        description: "User registered successfully",
+        duration: 2,
+      });
+      return;
+    } catch (error) {
+      console.error("Register failed", error);
     }
   };
 
@@ -74,7 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, register, loading }}>
       {children}
     </AuthContext.Provider>
   );
