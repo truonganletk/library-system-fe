@@ -1,10 +1,12 @@
 "use client";
+
 import { useAuth } from "@/contexts/auth/AuthContext";
 import type { FormProps } from "antd";
 import { Button, Checkbox, Flex, Form, Input, Spin, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 type FieldType = {
   username: string;
@@ -19,6 +21,7 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
 const LoginForm: React.FC = () => {
   const { login, user, loading } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (user) {
@@ -45,7 +48,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <Flex className="h-screen flex flex-col items-center justify-center">
-      <Typography.Title level={2}>Login</Typography.Title>
+      <Typography.Title level={2}>{t("title")}</Typography.Title>
       <Form
         name="basic"
         labelCol={{ span: 5 }}
@@ -88,7 +91,7 @@ const LoginForm: React.FC = () => {
       <Typography.Text>
         Don&apos;t have an account?{" "}
         <Link href="/register" passHref>
-        <Typography.Link>Register</Typography.Link>
+          <Typography.Link>Register</Typography.Link>
         </Link>
       </Typography.Text>
     </Flex>
